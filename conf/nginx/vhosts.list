@@ -1,0 +1,7 @@
+server_name
+  sub1.dom.tld
+  sub2.dom.tld
+  dom.tld
+  dom2.tld
+  *.dom2.tld
+;
