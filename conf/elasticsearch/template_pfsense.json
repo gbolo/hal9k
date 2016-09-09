@@ -1,0 +1,235 @@
+{
+    "order": 0,
+    "template" : "pfsense-*",
+    "settings" : {
+      "index": {
+          "refresh_interval": "5s"
+      }
+    },
+    "mappings" : {
+      "_default_" : {
+         "properties" : {
+           "@timestamp": {
+               "type": "date",
+               "format": "strict_date_optional_time||epoch_millis"
+           },
+          "@version" : {
+            "index" : "not_analyzed",
+            "type" : "string"
+          },
+          "ack_number": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "action": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "data_length": {
+              "index" : "not_analyzed",
+              "type": "integer"
+          },
+          "dest_ip": {
+              "index" : "not_analyzed",
+              "type": "ip"
+          },
+          "dest_port": {
+              "index" : "not_analyzed",
+              "type": "integer"
+          },
+          "direction": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "evtid": {
+              "index" : "not_analyzed",
+              "type": "short"
+          },
+          "flags": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "geoip": {
+              "dynamic": true,
+              "properties": {
+                  "area_code": {
+                      "index" : "not_analyzed",
+                      "type": "long"
+                  },
+                  "city_name": {
+                      "index": "not_analyzed",
+                      "type": "string"
+                  },
+                  "continent_code": {
+                      "index": "not_analyzed",
+                      "type": "string"
+                  },
+                  "country_code2": {
+                      "index": "not_analyzed",
+                      "type": "string"
+                  },
+                  "country_code3": {
+                      "index": "not_analyzed",
+                      "type": "string"
+                  },
+                  "country_name": {
+                      "index": "not_analyzed",
+                      "type": "string"
+                  },
+                  "dma_code": {
+                      "index": "not_analyzed",
+                      "type": "long"
+                  },
+                  "ip": {
+                      "index": "not_analyzed",
+                      "type": "ip"
+                  },
+                  "latitude": {
+                      "index": "not_analyzed",
+                      "type": "float"
+                  },
+                  "location": {
+                      "type": "geo_point"
+                  },
+                  "longitude": {
+                      "index": "not_analyzed",
+                      "type": "float"
+                  },
+                  "postal_code": {
+                      "index": "not_analyzed",
+                      "type": "string"
+                  },
+                  "real_region_name": {
+                      "index": "not_analyzed",
+                      "type": "string"
+                  },
+                  "region_name": {
+                      "index": "not_analyzed",
+                      "type": "string"
+                  },
+                  "timezone": {
+                      "index": "not_analyzed",
+                      "type": "string"
+                  }
+              }
+          },
+          "host": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "icmp_echo_id": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "icmp_echo_sequence": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "icmp_type": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "icmp_unreachport_dest_ip": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "icmp_unreachport_port": {
+              "index" : "not_analyzed",
+              "type": "integer"
+          },
+          "icmp_unreachport_protocol": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "id": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "iface": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "ip_ver": {
+              "index" : "not_analyzed",
+              "type": "short"
+          },
+          "length": {
+              "index" : "not_analyzed",
+              "type": "integer"
+          },
+          "message": {
+              "type": "string"
+          },
+          "offset": {
+              "index" : "not_analyzed",
+              "type": "integer"
+          },
+          "prog": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "proto": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "proto_id": {
+              "index" : "not_analyzed",
+              "type": "short"
+          },
+          "reason": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "rule": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "sequence_number": {
+              "index" : "not_analyzed",
+              "type": "long"
+          },
+          "src_ip": {
+              "index" : "not_analyzed",
+              "type": "ip"
+          },
+          "src_port": {
+              "index" : "not_analyzed",
+              "type": "integer"
+          },
+          "sub_rule": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "tags": {
+              "type": "string"
+          },
+          "tcp_flags": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "tcp_window": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "tos": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "tracker": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "ttl": {
+              "index" : "not_analyzed",
+              "type": "string"
+          },
+          "type": {
+              "index" : "not_analyzed",
+              "type": "string"
+          }
+        }
+      }
+    },
+    "aliases" : { }
+}
+
