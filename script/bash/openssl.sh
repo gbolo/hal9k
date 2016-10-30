@@ -19,7 +19,7 @@ openssl req -in /tmp/secp384r1-server1-csr.pem -noout -text
 # sign it
 openssl x509 -req -SHA384 -days 360 -in /tmp/secp384r1-server1-csr.pem -CA /tmp/secp384-x509.pem -CAkey /tmp/secp384-x509-key.pem -CAcreateserial -out /tmp/secp384r1-server1-x509.pem
 # verify
-
+openssl verify -verbose -CAfile /tmp/secp384-x509.pem /tmp/secp384r1-server1-x509.pem
 
 # RSA fill this in later... ----------------------------------------------------------
 
