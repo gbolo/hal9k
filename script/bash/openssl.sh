@@ -20,3 +20,8 @@ openssl x509 -req -SHA384 -days 360 -in /tmp/secp384r1-server1-csr.pem -CA /tmp/
 
 
 # RSA fill this in later... ----------------------------------------------------------
+
+
+
+# Connecting over https
+openssl s_client -connect 127.0.0.1:7050
