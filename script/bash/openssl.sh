@@ -1,6 +1,8 @@
 # ECDSA -------------------------------------------------------------------------------
 # Create ECDSA keypair
 openssl ecparam -name secp384r1 -genkey -noout -out /tmp/secp384r1-key.pem
+# View the private/public key portions
+openssl ec -in /tmp/secp384r1-key.pem -text -noout
 # Extract public key if you want to...
 openssl ec -in /tmp/secp384r1-key.pem -pubout -out /tmp/secp384r1-pub.pem
 # Generate x509 cert signed by private key
