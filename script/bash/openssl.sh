@@ -20,8 +20,19 @@ openssl req -in /tmp/secp384r1-server1-csr.pem -noout -text
 openssl x509 -req -SHA384 -days 360 -in /tmp/secp384r1-server1-csr.pem -CA /tmp/secp384-x509.pem -CAkey /tmp/secp384-x509-key.pem -CAcreateserial -out /tmp/secp384r1-server1-x509.pem
 # verify
 openssl verify -verbose -CAfile /tmp/secp384-x509.pem /tmp/secp384r1-server1-x509.pem
+# verify over https
+
+
 
 # RSA fill this in later... ----------------------------------------------------------
+
+
+# Converting certs --------------------------------------------------------------------
+# from der to pem
+openssl x509 -inform der -in test.der -out test.pem
+# from pem to der
+openssl x509 -outform der -in test.pem -out test.der
+
 
 
 
