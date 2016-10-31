@@ -1,3 +1,6 @@
+# enrollment login
+/opt/fabric/peer/bin/peer --logging-level warning network login jim
+
 # chaincode deploy
 /opt/fabric/peer/bin/peer --logging-level warning chaincode deploy \
 -u jim \
