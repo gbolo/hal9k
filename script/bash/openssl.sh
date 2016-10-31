@@ -34,7 +34,15 @@ openssl x509 -inform der -in test.der -out test.pem
 openssl x509 -outform der -in test.pem -out test.der
 
 
-
+# Viewing Certs ----------------------------------------------------------------------
+# Check a Certificate Signing Request (CSR)
+openssl req -text -noout -verify -in CSR.csr
+# Check a private key
+openssl rsa -in privateKey.key -check
+# Check a certificate
+openssl x509 -in certificate.crt -text -noout
+# Check a PKCS#12 file (.pfx or .p12)
+openssl pkcs12 -info -in keyStore.p12
 
 # Connecting over https
 openssl s_client -connect 127.0.0.1:7050
