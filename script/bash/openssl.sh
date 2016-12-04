@@ -46,3 +46,10 @@ openssl pkcs12 -info -in keyStore.p12
 
 # Connecting over https
 openssl s_client -connect 127.0.0.1:7050
+
+# performance testing -----------------------------------------------------------------
+# basic aes tests
+openssl speed aes-128-cbc aes-192-cbc aes-256-cbc
+# increase threads
+openssl speed -elapsed -evp aes-128-cbc -multi 1
+
