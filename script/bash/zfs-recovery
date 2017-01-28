@@ -1,0 +1,93 @@
+# zfs on freebsd temp notes
+# added a previously used linux disk to a zpool and did a replace
+# after moving all disks to freebsd, it couldn't detect that it was part of zpool
+zpool status
+  pool: zpool1
+ state: UNAVAIL
+status: One or more devices could not be opened.  There are insufficient
+	replicas for the pool to continue functioning.
+action: Attach the missing device and online it using 'zpool online'.
+   see: http://illumos.org/msg/ZFS-8000-3C
+  scan: none requested
+config:
+
+	NAME                                            STATE     READ WRITE CKSUM
+	zpool1                                          UNAVAIL      0     0     0
+	  raidz1-0                                      UNAVAIL      0     0     0
+	    3156710084805441480                         UNAVAIL      0     0     0  was /dev/gptid/d662e6eb-dacf-11e3-8c9a-000c2928cdad
+	    16566930820057060732                        UNAVAIL      0     0     0  was /dev/gptid/d6b0cf6b-dacf-11e3-8c9a-000c2928cdad
+	    gptid/d6f14c13-dacf-11e3-8c9a-000c2928cdad  ONLINE       0     0     0
+
+# show disks
+camcontrol devlist
+<NECVMWar VMware IDE CDR10 1.00>   at scbus1 target 0 lun 0 (pass0,cd0)
+<VMware Virtual disk 1.0>          at scbus2 target 0 lun 0 (pass1,da0)
+<ATA WDC WD20EFRX-68A 0A80>        at scbus3 target 2 lun 0 (da1,pass2)  <-- this was one of original disks
+<ATA WDC WD2002FAEX-0 1D05>        at scbus3 target 6 lun 0 (da2,pass3)  <-- this disk was replaced and resilvered
+<ATA WDC WD2002FAEX-0 1D05>        at scbus3 target 7 lun 0 (da3,pass4)  <-- this is new disk never had any related data
+
+# labels
+glabel status
+                                      Name  Status  Components
+gptid/0de4bb24-aa85-11e4-a2cc-000c29fd13fe     N/A  da0p1
+diskid/DISK-%20%20%20%20%20WD-WMC301281917     N/A  da1
+gptid/d6ea40d6-dacf-11e3-8c9a-000c2928cdad     N/A  da1p1
+gptid/d6f14c13-dacf-11e3-8c9a-000c2928cdad     N/A  da1p2
+diskid/DISK-%20%20%20%20%20WD-WMAY03511634     N/A  da2
+diskid/DISK-%20%20%20%20%20WD-WMAY02714664     N/A  da3
+
+# shows parts
+gpart show
+
+# show labels (look for zfs related labels to determine resilvered disk)
+zdb -l /dev/da2
+
+# force destroy partition table (it confuses freebsd)
+gpart destroy -F da2
+
+# online the disk that we resilvered before
+zpool online zpool1 /dev/da2
+zpool export zpool1
+
+# import zpool; should now be online but degraded
+zpool import
+   pool: zpool1
+     id: 4766945149983912779
+  state: DEGRADED
+ status: One or more devices are missing from the system.
+ action: The pool can be imported despite missing or damaged devices.  The
+	fault tolerance of the pool may be compromised if imported.
+   see: http://illumos.org/msg/ZFS-8000-2Q
+ config:
+
+	zpool1                                          DEGRADED
+	  raidz1-0                                      DEGRADED
+	    diskid/DISK-%20%20%20%20%20WD-WMAY03511634  ONLINE
+	    16566930820057060732                        UNAVAIL  cannot open
+	    gptid/d6f14c13-dacf-11e3-8c9a-000c2928cdad  ONLINE
+
+# destroy part table of new disk and replace missing drive
+gpart destroy -F da3
+zpool replace zpool1 16566930820057060732 /dev/da3
+
+# zpool should be degraded but resilvering new disk now
+zpool status
+  pool: zpool1
+ state: DEGRADED
+status: One or more devices is currently being resilvered.  The pool will
+	continue to function, possibly in a degraded state.
+action: Wait for the resilver to complete.
+  scan: resilver in progress since Sun Jan  8 11:05:34 2017
+        125M scanned out of 4.13T at 10.4M/s, 115h27m to go
+        40.3M resilvered, 0.00% done
+config:
+
+	NAME                                              STATE     READ WRITE CKSUM
+	zpool1                                            DEGRADED     0     0     0
+	  raidz1-0                                        DEGRADED     0     0     0
+	    diskid/DISK-%20%20%20%20%20WD-WMAY03511634    ONLINE       0     0     0
+	    replacing-1                                   UNAVAIL      0     0     0
+	      16566930820057060732                        UNAVAIL      0     0     0  was /dev/gptid/d6b0cf6b-dacf-11e3-8c9a-000c2928cdad
+	      diskid/DISK-%20%20%20%20%20WD-WMAY02714664  ONLINE       0     0     0  (resilvering)
+	    gptid/d6f14c13-dacf-11e3-8c9a-000c2928cdad    ONLINE       0     0     0
+
